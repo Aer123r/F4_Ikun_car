@@ -27,7 +27,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "motor.h"
+#include "common_inc.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,7 +48,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osThreadId ledBlinkyTaskHandle;
+osThreadId motorTaskHandle;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -112,6 +114,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+
   /* USER CODE END RTOS_THREADS */
 }
 
@@ -124,15 +127,11 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const *argument) {
   /* USER CODE BEGIN StartDefaultTask */
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-  __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_3, 0.4 * 1000);
-  HAL_GPIO_WritePin(MOTOR1_A_PORT, MOTOR1_A_PIN, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(MOTOR1_B_PORT, MOTOR1_B_PIN, GPIO_PIN_RESET);
-
+  // use c++'s main function 
+  Main();
+  vTaskDelete(defaultTaskHandle);
   /* Infinite loop */
-  for (;;) {
-    osDelay(1);
-  }
+
   /* USER CODE END StartDefaultTask */
 }
 

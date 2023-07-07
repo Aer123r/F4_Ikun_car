@@ -52,6 +52,24 @@ extern "C" {
 #define MOTOR1_B_PIN  GPIO_PIN_9
 #define MOTOR1_B_PORT GPIOD
 
+#define MOTOR2_A_PIN  GPIO_PIN_15
+#define MOTOR2_A_PORT GPIOE
+
+#define MOTOR2_B_PIN  GPIO_PIN_8
+#define MOTOR2_B_PORT GPIOD
+
+#define MOTOR3_A_PIN  GPIO_PIN_10
+#define MOTOR3_A_PORT GPIOE
+
+#define MOTOR3_B_PIN  GPIO_PIN_13
+#define MOTOR3_B_PORT GPIOE
+
+#define MOTOR4_A_PIN  GPIO_PIN_12
+#define MOTOR4_A_PORT GPIOE
+
+#define MOTOR4_B_PIN  GPIO_PIN_14
+#define MOTOR4_B_PORT GPIOE
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
