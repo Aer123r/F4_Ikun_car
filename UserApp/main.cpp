@@ -14,6 +14,7 @@ void LedBlinkyTask(void const *argument) {
 
 // TODO 处理编码器数据和更加PWM
 void MotorHandleTask(void const *argument) {
+    motor.Move();
     while (1) {
         osDelay(50);
     }
@@ -25,7 +26,7 @@ void Main() {
     osThreadDef(LedBlinkyTask_, LedBlinkyTask, osPriorityNormal, 0, 128);
     ledBlinkyTaskHandle = osThreadCreate(osThread(LedBlinkyTask_), NULL);
 
-    osThreadDef(MotorTask, MotorHandleTask, osPriorityNormal, 0, 128);
+    osThreadDef(MotorTask, MotorHandleTask, osPriorityNormal, 0, 512);
     motorTaskHandle = osThreadCreate(osThread(MotorTask), NULL);
 
 }
