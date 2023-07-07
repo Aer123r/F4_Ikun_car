@@ -19,13 +19,9 @@ extern "C" {
 
 // List of Tasks
 /*--------------------------------- System Tasks -------------------------------------*/
-// extern osThreadId_t defaultTaskHandle;      // Usage: 2000 Bytes stack
-// extern osThreadId_t commTaskHandle;         // Usage: 48000 Bytes stack
-// extern osThreadId_t usbIrqTaskHandle;       // Usage: 512  Bytes stack
-// extern osThreadId_t usbServerTaskHandle;    // Usage: 2048 Bytes stack
-// extern osThreadId_t uartServerTaskHandle;   // Usage: 2048 Bytes stack
 extern osThreadId ledBlinkyTaskHandle;
 extern osThreadId motorTaskHandle;
+extern osThreadId obstacleTaskHandle;
 /*---------------------------------- User Tasks --------------------------------------*/
 // extern osThreadId_t oledTaskHandle;         // Usage: 4000 Bytes stack
 // extern osThreadId_t controlLoopFixUpdateHandle;  // Usage: 4000 Bytes stack
