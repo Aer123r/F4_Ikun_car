@@ -21,7 +21,7 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-
+volatile int64_t encCntLoop[2];
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim1;
@@ -53,15 +53,15 @@ void MX_TIM1_Init(void)
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 0;
+  sConfig.IC1Filter = 4;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 0;
+  sConfig.IC2Filter = 4;
   if (HAL_TIM_Encoder_Init(&htim1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -73,7 +73,8 @@ void MX_TIM1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM1_Init 2 */
-
+    TIM1->CNT = 0;
+    TIM1->SR = TIM1->SR & 0XFE;
   /* USER CODE END TIM1_Init 2 */
 
 }
@@ -675,5 +676,59 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance->SR & 0x01) // count overflow
+    {
+        if (htim->Instance->CR1 & 0x10) // count up
+        {
+            if (htim->Instance == TIM1)
+                encCntLoop[0]--;
+            else if (htim->Instance == TIM3)
+                encCntLoop[1]--;
+        } else                          // count down
+        {
+            if (htim->Instance == TIM1)
+                encCntLoop[0]++;
+            else if (htim->Instance == TIM3)
+                encCntLoop[1]++;
+        }
+
+        htim->Instance->SR = htim->Instance->SR & 0xFE; // clear flag
+    }
+}
+
+int64_t GetCntLoop(TIM_TypeDef *tim)
+{
+    if (tim == TIM1)
+    {
+        return encCntLoop[0];
+    } else if (tim == TIM3)
+    {
+        return encCntLoop[1];
+    }
+}
+
+void ClearCntLoop(TIM_TypeDef *tim)
+{
+    if (tim == TIM1)
+    {
+        encCntLoop[0] = 0;
+    } else if (tim == TIM3)
+    {
+        encCntLoop[1] = 0;
+    }
+}
+
+int64_t GetEncoderCount(TIM_TypeDef *tim)
+{
+    if (tim == TIM1)
+    {
+        return encCntLoop[0] * 65536 + TIM2->CNT;
+    } else if (tim == TIM3)
+    {
+        return encCntLoop[1] * 65536 + TIM3->CNT;
+    }
+}
 
 /* USER CODE END 1 */

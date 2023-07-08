@@ -61,7 +61,9 @@ void MX_TIM9_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN Prototypes */
-
+int64_t GetEncoderCount(TIM_TypeDef *tim);
+void ClearCntLoop(TIM_TypeDef *tim);
+int64_t GetCntLoop(TIM_TypeDef *tim);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

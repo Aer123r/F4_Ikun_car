@@ -49,6 +49,9 @@
 osThreadId ledBlinkyTaskHandle;
 osThreadId motorTaskHandle;
 osThreadId obstacleTaskHandle;
+
+osMutexId pwmMutexHandle;
+
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 

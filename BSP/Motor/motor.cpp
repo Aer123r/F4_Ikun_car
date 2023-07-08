@@ -46,7 +46,7 @@ void Motor::Init() {
 
 // TODO
 void Motor::Move() {
-            __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.1 * 1000);
+            __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.2 * 1000);
     setDirection(this->m1,FORWARD);
 //            __HAL_TIM_SetCompare(m2.htim, m2.Channel, 0.3 * 1000);
 //    setDirection(this->m2,FORWARD);
