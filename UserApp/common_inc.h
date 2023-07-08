@@ -15,7 +15,7 @@ extern "C" {
 #include "cmsis_os.h"
 #include "freertos_inc.h"
 #include "tim.h"
-
+#include "usart.h"
 void Main(void);
 
 extern uint64_t serialNumber;

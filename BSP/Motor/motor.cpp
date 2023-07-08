@@ -49,11 +49,11 @@ void Motor::Move() {
             __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.4 * 1000);
     setDirection(this->m1,FORWARD);
             __HAL_TIM_SetCompare(m2.htim, m2.Channel, 0.4 * 1000);
-    setDirection(this->m1,FORWARD);
-            __HAL_TIM_SetCompare(m3.htim, m2.Channel, 0.4 * 1000);
-    setDirection(this->m1,FORWARD);
+    setDirection(this->m2,FORWARD);
+            __HAL_TIM_SetCompare(m3.htim, m3.Channel, 0.4 * 1000);
+    setDirection(this->m3,FORWARD);
             __HAL_TIM_SetCompare(m4.htim, m4.Channel, 0.4 * 1000);
-    setDirection(this->m1,FORWARD);
+    setDirection(this->m4,FORWARD);
 }
 
 void Motor::setDirection(Motor_t &m,Direction_t d) {
