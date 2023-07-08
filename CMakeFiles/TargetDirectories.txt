@@ -1,0 +1,3 @@
+/Users/wugaoyuan/Documents/PlarformIO/Projects/F4_Ikun_car/CMakeFiles/F4_Ikun_car.elf.dir
+/Users/wugaoyuan/Documents/PlarformIO/Projects/F4_Ikun_car/CMakeFiles/edit_cache.dir
+/Users/wugaoyuan/Documents/PlarformIO/Projects/F4_Ikun_car/CMakeFiles/rebuild_cache.dir
