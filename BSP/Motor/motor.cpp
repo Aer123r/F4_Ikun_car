@@ -46,14 +46,14 @@ void Motor::Init() {
 
 // TODO
 void Motor::Move() {
-            __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.2 * 1000);
+            __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.6 * 1000);
     setDirection(this->m1,FORWARD);
-//            __HAL_TIM_SetCompare(m2.htim, m2.Channel, 0.3 * 1000);
-//    setDirection(this->m2,FORWARD);
-//            __HAL_TIM_SetCompare(m3.htim, m3.Channel, 0.3 * 1000);
-//    setDirection(this->m3,FORWARD);
-//            __HAL_TIM_SetCompare(m4.htim, m4.Channel, 0.3 * 1000);
-//    setDirection(this->m4,FORWARD);
+            __HAL_TIM_SetCompare(m2.htim, m2.Channel, 0.6 * 1000);
+    setDirection(this->m2,FORWARD);
+            __HAL_TIM_SetCompare(m3.htim, m3.Channel, 0.6 * 1000);
+    setDirection(this->m3,FORWARD);
+            __HAL_TIM_SetCompare(m4.htim, m4.Channel, 0.6 * 1000);
+    setDirection(this->m4,FORWARD);
 }
 
 void Motor::setDirection(Motor_t &m,Direction_t d) {
@@ -71,4 +71,11 @@ void Motor::setDirection(Motor_t &m,Direction_t d) {
             HAL_GPIO_WritePin(m.PORT_B, m.PIN_B, GPIO_PIN_RESET);
             break;
     }
+}
+
+void Motor::Stop() {
+    setDirection(this->m1,STOP);
+    setDirection(this->m2,STOP);
+    setDirection(this->m3,STOP);
+    setDirection(this->m4,STOP);
 }

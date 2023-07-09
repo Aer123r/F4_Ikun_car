@@ -49,6 +49,7 @@
 osThreadId ledBlinkyTaskHandle;
 osThreadId motorTaskHandle;
 osThreadId obstacleTaskHandle;
+osThreadId servoTaskHandle;
 
 osMutexId pwmMutexHandle;
 

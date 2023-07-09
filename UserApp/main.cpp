@@ -1,22 +1,27 @@
 #include "common_inc.h"
 #include "freertos_inc.h"
-#include "motor.hpp"
-#include "MPU6050.hpp"
-#include "usart.h"
-#include "encoder/encoder.hpp"
+
 #include "ArduinoJson.h"
 #include "string"
 
 Motor motor;
-Encoder encoder(&htim1);
+Encoder encoder1(&htim1);
+Encoder encoder2(&htim3);
+Encoder encoder3(&htim4);
+Encoder encoder4(&htim8);
 MPU6050 mpu6050(&hi2c1);
+
+Servo servo(&htim9,TIM_CHANNEL_1);
+
 StaticJsonDocument<200> jsonDocument;
 uint8_t rx_data[100];
 
 float pwm;
+
 /* LED Blinking Task */
 void LedBlinkyTask(void const *argument) {
-    encoder.Start();
+
+    encoder1.Start();
     std::string s;
     while (1) {
         osMutexWait(pwmMutexHandle,10);
@@ -27,21 +32,40 @@ void LedBlinkyTask(void const *argument) {
         osDelay(1000);
     }
 }
+/**
+ * @def 舵机控制任务
+ * @param argument
+ */
 
-// TODO 处理编码器数据和更加PWM
+void ServoHandleTask(void const *argument) {
+    servo.Init();
+    servo.SetAngle(210);
+    while(1){
+        osDelay(200);
+    }
+}
+
+
+/**
+ * TODO 处理编码器数据和更加PWM
+ * @def 电机控制任务
+ */
+
 void MotorHandleTask(void const *argument) {
-    static int64_t prev_count = encoder.GetCount();
+//    static int64_t prev_count = encoder1.GetCount();
 //    motor.Move();
+//    osDelay(5000);
+    motor.Stop();
     while (1) {
         osMutexWait(pwmMutexHandle,10);
-        int64_t count = encoder.GetCount();
-        if(count > prev_count){
-            pwm = count - prev_count;
-        }else{
-            pwm = count+65535-prev_count;
-        }
-        pwm = pwm/550;
-        prev_count = count;
+//        int64_t count = encoder1.GetCount();
+//        if(count >= prev_count){
+//            pwm = count - prev_count;
+//        }else{
+//            pwm = count+65535-prev_count;
+//        }
+//        pwm = pwm/550;
+//        prev_count = count;
         osMutexRelease(pwmMutexHandle);
         osDelay(50);
     }
@@ -76,10 +100,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
     if(GPIO_Pin == GPIO_PIN_2){
-        // TODO
-    }else{
-
-    }
+    }else{}
 }
 
 /* 主函数 */
@@ -93,7 +114,6 @@ void Main() {
 //    mpu6050.InitFilter(200, 100, 50);
     /* 初始化 */
     motor.Init();
-    HAL_UART_Transmit_IT(&huart1,(uint8_t *)"aa",2);
 
     osMutexDef(pwmMutex);
     pwmMutexHandle = osMutexCreate(osMutex(pwmMutex));
@@ -103,6 +123,9 @@ void Main() {
 
     osThreadDef(MotorTask, MotorHandleTask, osPriorityNormal, 0, 512);
     motorTaskHandle = osThreadCreate(osThread(MotorTask), NULL);
+
+    osThreadDef(ServoTask, ServoHandleTask, osPriorityAboveNormal, 0, 512);
+    servoTaskHandle = osThreadCreate(osThread(ServoTask), NULL);
 
     osThreadDef(ObstacleDetectionTask,obstacleDetectionAndProcessingTask,osPriorityHigh,0,512);
     obstacleTaskHandle = osThreadCreate(osThread(ObstacleDetectionTask), NULL);

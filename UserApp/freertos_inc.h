@@ -16,6 +16,7 @@ extern osMutexId pwmMutexHandle;
 extern osThreadId ledBlinkyTaskHandle;
 extern osThreadId motorTaskHandle;
 extern osThreadId obstacleTaskHandle;
+extern osThreadId servoTaskHandle;
 /*---------------------------------- User Tasks --------------------------------------*/
 // extern osThreadId_t oledTaskHandle;         // Usage: 4000 Bytes stack
 // extern osThreadId_t controlLoopFixUpdateHandle;  // Usage: 4000 Bytes stack

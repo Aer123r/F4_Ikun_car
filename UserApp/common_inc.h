@@ -16,6 +16,7 @@ extern "C" {
 #include "freertos_inc.h"
 #include "tim.h"
 #include "usart.h"
+
 void Main(void);
 
 extern uint64_t serialNumber;
@@ -27,7 +28,9 @@ extern char serialNumberStr[13];
 
 /*---------------------------- C++ Scope ---------------------------*/
 #include "motor.hpp"
-
+#include "encoder/encoder.hpp"
+#include "MPU6050.hpp"
+#include "servo.hpp"
 #endif
 #endif //REF_STM32F4_COMMON_INC_H
 

@@ -31,6 +31,7 @@ public:
   ~Motor();
   void Init();
   void Move();
+  void Stop();
 };
 
 #endif // !MOTOR_H_
