@@ -48,12 +48,9 @@ void MotorHandleTask(void const *argument) {
     }
     ikun::move(motors);
     while (1) {
-        osMutexWait(pwmMutexHandle,10);
         for(uint8_t i=0;i<4;i++){
             motors[i].correctCount();
         }
-
-        osMutexRelease(pwmMutexHandle);
         osDelay(50);
     }
 }

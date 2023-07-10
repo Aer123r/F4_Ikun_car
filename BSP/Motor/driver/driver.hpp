@@ -64,12 +64,14 @@ public:
     Driver_t driver{0};
 
     int64_t cnt;
+    int64_t err;
     explicit Driver(Driver_t driver,int64_t cnt = 200);
     ~Driver();
 
     void Init();
     void SetDirection(Direction_t d);
     void SetCNT(int64_t cnt);
+    void SetERR(int64_t err);
     int64_t GetCNT();
 };
 

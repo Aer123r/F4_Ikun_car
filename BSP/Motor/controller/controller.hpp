@@ -15,10 +15,9 @@ public:
 
     typedef struct
     {
-        int32_t kp, ki, kd;
-        int32_t vError, vErrorLast;
-        int32_t integralRound;
-        int32_t integralRemainder;
+        float kp, ki, kd;
+        float vError, vErrorLast;
+        float integral;
         int32_t output;
     } PID_t;
     PID_t  pid{0};

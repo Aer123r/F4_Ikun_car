@@ -12,7 +12,7 @@ void Motor::correctCount() {
     if(var.firstTime) {
         var.prev_count = encoder->GetCount();
         var.firstTime = false;
-        return;
+        return 0;
     }
     int64_t count = encoder->GetCount();
     int64_t cnt;
@@ -31,12 +31,12 @@ void Motor::correctCount() {
             cnt = count - var.prev_count + 65536;
         }
     }
-    if(var.epoch++ == 20){
-        var.epoch=0;
-        std::string s;
-        s = std::to_string(cnt).append("\n");
-        HAL_UART_Transmit(&huart1,(uint8_t *)s.c_str(),s.size(),100);
-    }
+//    if(var.epoch++ == 20){
+//        var.epoch=0;
+//        std::string s;
+//        s = std::to_string(cnt).append("\n");
+//        HAL_UART_Transmit(&huart1,(uint8_t *)s.c_str(),s.size(),100);
+//    }
     var.prev_count = count;
     return;
 }

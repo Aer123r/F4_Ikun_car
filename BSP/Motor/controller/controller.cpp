@@ -3,28 +3,23 @@
 //
 
 #include "controller.hpp"
-
+#include "string"
 void Controller::PIDController(int32_t setpoint, int32_t processVariable)
 {
-    int32_t error = setpoint - processVariable;
+    static int epoch=0;
+    pid.vError = setpoint - processVariable;
+    pid.integral += pid.vError;
+    float derivative = pid.vError-pid.vErrorLast;
+    pid.output = int32_t (pid.kp*pid.vError + pid.integral*pid.ki+pid.kd*derivative);
+    pid.vErrorLast = pid.vError;
 
-    // Proportional term
-    int32_t proportional = pid.kp * error;
-
-    // Integral term
-    pid.integralRemainder += (pid.ki * error) + pid.integralRound;
-    int32_t integral = pid.integralRemainder / 1000;
-    pid.integralRemainder = pid.integralRemainder % 1000;
-
-    // Derivative term
-    int32_t derivative = pid.kd * (error - pid.vErrorLast);
-
-    // Calculate the output
-    pid.output = proportional + integral + derivative;
-
-    // Update variables for the next iteration
-    pid.vErrorLast = error;
-    pid.vError = error;
+//    if(epoch++ == 20){
+//        epoch = 0;
+//        std::string s;
+//        s = std::to_string(pid.output).append("\n");
+//        HAL_UART_Transmit(&huart1,(uint8_t *)s.c_str(),s.size(),100);
+//    }
+    return;
 }
 
 Controller::Controller(int32_t kp, int32_t ki, int32_t kd): pid({
