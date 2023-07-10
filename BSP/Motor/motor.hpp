@@ -11,6 +11,16 @@ public:
     Encoder *encoder = nullptr;
     Controller *controller = nullptr;
 
+    typedef struct {
+      bool firstTime;
+      int32_t epoch;
+      int64_t prev_count;
+    } Var;
+    Var var = {
+            .firstTime = true,
+            .epoch = 0,
+            .prev_count = 0,
+    };
     Motor();
     ~Motor();
 

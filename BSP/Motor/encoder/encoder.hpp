@@ -5,6 +5,7 @@
 #ifndef F4_IKUN_CAR_ENCODER_HPP
 #define F4_IKUN_CAR_ENCODER_HPP
 #include "common_inc.h"
+class Motor;
 class Encoder
 {
 private:
@@ -13,6 +14,7 @@ private:
     TIM_HandleTypeDef *htim;
 
 public:
+    friend Motor;
     explicit Encoder(TIM_HandleTypeDef *_htim, uint16_t _cpr = 4096, bool _inverse = false);
 
     void Start();

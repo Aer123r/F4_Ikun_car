@@ -15,12 +15,10 @@ int64_t pwm;
 /* LED Blinking Task */
 void LedBlinkyTask(void const *argument) {
 
-    std::string s;
     while (1) {
         osMutexWait(pwmMutexHandle,10);
-        s = std::to_string(pwm).append("\n");
+//        s = std::to_string(pwm).append("\n");
         osMutexRelease(pwmMutexHandle);
-        HAL_UART_Transmit_IT(&huart1,(uint8_t *)s.c_str(),s.size());
         HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_9);
         osDelay(1000);
     }
@@ -48,11 +46,13 @@ void MotorHandleTask(void const *argument) {
     for(uint8_t i=0;i<4;i++){
         motors[i].encoder->Start();
     }
-    ikun::stop(motors);
+    ikun::move(motors);
     while (1) {
         osMutexWait(pwmMutexHandle,10);
-        pwm = motors[0].encoder->GetCount();
-//        pwm = motors[2].encoder->GetAngle();
+        for(uint8_t i=0;i<4;i++){
+            motors[i].correctCount();
+        }
+
         osMutexRelease(pwmMutexHandle);
         osDelay(50);
     }
