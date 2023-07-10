@@ -8,7 +8,7 @@ void delay_us(uint32_t nus)
     uint32_t told,tnow,reload,tcnt=0;
     if((0x0001&(SysTick->CTRL)) ==0)    //定时器未工作
 
-    reload = SysTick->LOAD;                     //获取重装载寄存器值
+        reload = SysTick->LOAD;                     //获取重装载寄存器值
     ticks = nus * (SystemCoreClock / 1000000);  //计数时间值
     told=SysTick->VAL;                          //获取当前数值寄存器值（开始时数值）
 

@@ -3,14 +3,8 @@
 
 #include "ArduinoJson.h"
 #include "string"
-
-Motor motor;
-Encoder encoder1(&htim1);
-Encoder encoder2(&htim3);
-Encoder encoder3(&htim4);
-Encoder encoder4(&htim8);
-MPU6050 mpu6050(&hi2c1);
-
+#include "ikunCar.hpp"
+//Motor motors[4];
 Servo servo(&htim9,TIM_CHANNEL_1);
 
 StaticJsonDocument<200> jsonDocument;
@@ -21,7 +15,6 @@ float pwm;
 /* LED Blinking Task */
 void LedBlinkyTask(void const *argument) {
 
-    encoder1.Start();
     std::string s;
     while (1) {
         osMutexWait(pwmMutexHandle,10);
@@ -39,7 +32,7 @@ void LedBlinkyTask(void const *argument) {
 
 void ServoHandleTask(void const *argument) {
     servo.Init();
-    servo.SetAngle(210);
+    servo.SetAngle(135);
     while(1){
         osDelay(200);
     }
@@ -52,10 +45,9 @@ void ServoHandleTask(void const *argument) {
  */
 
 void MotorHandleTask(void const *argument) {
+//    ikun::move(motors);
 //    static int64_t prev_count = encoder1.GetCount();
-//    motor.Move();
 //    osDelay(5000);
-    motor.Stop();
     while (1) {
         osMutexWait(pwmMutexHandle,10);
 //        int64_t count = encoder1.GetCount();
@@ -106,14 +98,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 /* 主函数 */
 void Main() {
 
-//    do
-//    {
-//        mpu6050.Init();
-//        osDelay(100);
-//    } while (!mpu6050.testConnection());
-//    mpu6050.InitFilter(200, 100, 50);
-    /* 初始化 */
-    motor.Init();
+//    motors[0].driver = new Driver(Config_Driver_1);
+//    motors[1].driver = new Driver(Config_Driver_2);
+//    motors[2].driver = new Driver(Config_Driver_3);
+//    motors[3].driver = new Driver(Config_Driver_4);
+//
+//    motors[0].encoder = new Encoder(&htim1);
+//    motors[1].encoder = new Encoder(&htim3);
+//    motors[2].encoder = new Encoder(&htim4);
+//    motors[3].encoder = new Encoder(&htim8);
+
+
 
     osMutexDef(pwmMutex);
     pwmMutexHandle = osMutexCreate(osMutex(pwmMutex));

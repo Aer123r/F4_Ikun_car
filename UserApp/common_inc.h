@@ -19,8 +19,6 @@ extern "C" {
 
 void Main(void);
 
-extern uint64_t serialNumber;
-extern char serialNumberStr[13];
 
 
 #ifdef __cplusplus
@@ -29,8 +27,12 @@ extern char serialNumberStr[13];
 /*---------------------------- C++ Scope ---------------------------*/
 #include "motor.hpp"
 #include "encoder/encoder.hpp"
-#include "MPU6050.hpp"
+#include "driver/driver.hpp"
+#include "controller/controller.hpp"
 #include "servo.hpp"
+
+
+
 #endif
 #endif //REF_STM32F4_COMMON_INC_H
 

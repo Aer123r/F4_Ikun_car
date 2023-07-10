@@ -2,7 +2,7 @@
 
   u8x8_debounce.c
   
-  Key/button simple debounce algorithm (Addon for u8x8)
+  Key/button simple debounce controller (Addon for u8x8)
   
   Universal 8bit Graphics Library (https://github.com/olikraus/u8g2/)
 

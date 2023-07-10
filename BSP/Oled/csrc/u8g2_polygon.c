@@ -73,7 +73,7 @@ static void pg_expand_min_y(pg_struct *pg, pg_word_t min_y, uint8_t pge_idx) PG_
 static void pg_line_init(pg_struct * const pg, uint8_t pge_index) PG_NOINLINE;
 
 /*===========================================*/
-/* line draw algorithm */
+/* line draw controller */
 
 static uint8_t pge_Next(struct pg_edge_struct *pge)
 {
@@ -121,7 +121,7 @@ static void pge_Init(struct pg_edge_struct *pge, pg_word_t x1, pg_word_t y1, pg_
 }
 
 /*===========================================*/
-/* convex polygon algorithm */
+/* convex polygon controller */
 
 static uint8_t pg_inc(pg_struct *pg, uint8_t i)
 {
