@@ -11,11 +11,10 @@ public:
     Encoder *encoder = nullptr;
     Controller *controller = nullptr;
 
-
     Motor();
     ~Motor();
 
-
+    void correctCount();
 
 };
 

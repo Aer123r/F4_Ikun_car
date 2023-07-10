@@ -21,7 +21,7 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-volatile int64_t encCntLoop[2];
+volatile int64_t encCntLoop[4];
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim1;
@@ -686,12 +686,20 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
                 encCntLoop[0]--;
             else if (htim->Instance == TIM3)
                 encCntLoop[1]--;
+            else if(htim->Instance == TIM4)
+                encCntLoop[2]--;
+            else if(htim->Instance == TIM8)
+                encCntLoop[3]--;
         } else                          // count down
         {
             if (htim->Instance == TIM1)
                 encCntLoop[0]++;
             else if (htim->Instance == TIM3)
                 encCntLoop[1]++;
+            else if(htim->Instance == TIM4)
+                encCntLoop[2]++;
+            else if(htim->Instance == TIM8)
+                encCntLoop[3]++;
         }
 
         htim->Instance->SR = htim->Instance->SR & 0xFE; // clear flag
@@ -706,6 +714,11 @@ int64_t GetCntLoop(TIM_TypeDef *tim)
     } else if (tim == TIM3)
     {
         return encCntLoop[1];
+    }else if (tim == TIM4)
+    {
+        return encCntLoop[2];
+    }else if(tim == TIM8){
+        return encCntLoop[3];
     }
 }
 
@@ -717,6 +730,10 @@ void ClearCntLoop(TIM_TypeDef *tim)
     } else if (tim == TIM3)
     {
         encCntLoop[1] = 0;
+    }else if (tim == TIM4){
+        encCntLoop[2] = 0;
+    }else if (tim == TIM8){
+        encCntLoop[3] = 0;
     }
 }
 
@@ -728,6 +745,11 @@ int64_t GetEncoderCount(TIM_TypeDef *tim)
     } else if (tim == TIM3)
     {
         return encCntLoop[1] * 65536 + TIM3->CNT;
+    }else if (tim == TIM4)
+    {
+        return encCntLoop[2] + 65536 + TIM4->CNT;
+    }else if (tim == TIM8){
+        return encCntLoop[3] + 65536 + TIM8->CNT;
     }
 }
 

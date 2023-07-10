@@ -3,13 +3,14 @@
 //
 
 #include "driver.hpp"
-Driver::Driver(Driver_t driver,float p): driver(driver),pwm(p) {}
+Driver::Driver(Driver_t driver,int64_t cnt): driver(driver),cnt(cnt) {}
 
 Driver::~Driver() {}
 
 void Driver::Init() {
     assert_param(driver != nullptr);
     HAL_TIM_PWM_Start(driver.htim,driver.Channel);
+            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt);
 }
 
 void Driver::SetDirection(Direction_t d) {
@@ -33,11 +34,11 @@ void Driver::SetDirection(Direction_t d) {
     HAL_GPIO_WritePin(driver.PORT_B, driver.PIN_B, B_pinStatus);
 }
 
-void Driver::SetPWM(float p) {
-    this->pwm = p;
-            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->pwm * 1000);
+void Driver::SetCNT(int64_t cnt) {
+    this->cnt = cnt;
+            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt);
 }
 
-float Driver::GetPWM() {
-    return this->pwm;
+int64_t Driver::GetCNT() {
+    return this->cnt;
 }

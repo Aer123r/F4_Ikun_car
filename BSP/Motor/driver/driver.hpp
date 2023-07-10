@@ -48,9 +48,11 @@ enum Direction_t {
 };
 
 
-
+class Motor;
 class Driver {
 public:
+    friend Motor;
+
     typedef struct {
         TIM_HandleTypeDef *htim;
         uint32_t Channel;
@@ -61,14 +63,14 @@ public:
     } Driver_t;
     Driver_t driver{0};
 
-    float pwm;
-    explicit Driver(Driver_t driver,float pwm = 0.3);
+    int64_t cnt;
+    explicit Driver(Driver_t driver,int64_t cnt = 200);
     ~Driver();
 
     void Init();
     void SetDirection(Direction_t d);
-    void SetPWM(float p);
-    float GetPWM();
+    void SetCNT(int64_t cnt);
+    int64_t GetCNT();
 };
 
 

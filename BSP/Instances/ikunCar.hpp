@@ -18,8 +18,6 @@ namespace ikun {
         motors[2].driver->SetDirection(STOP);
         motors[3].driver->SetDirection(STOP);
     }
-    void DEBUG_PRINT(std::string s){
 
-    }
 };
 #endif //F4_IKUN_CAR_IKUNCAR_HPP

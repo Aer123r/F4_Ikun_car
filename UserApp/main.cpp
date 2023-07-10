@@ -4,13 +4,13 @@
 #include "ArduinoJson.h"
 #include "string"
 #include "ikunCar.hpp"
-//Motor motors[4];
+Motor motors[4];
 Servo servo(&htim9,TIM_CHANNEL_1);
 
 StaticJsonDocument<200> jsonDocument;
 uint8_t rx_data[100];
 
-float pwm;
+int64_t pwm;
 
 /* LED Blinking Task */
 void LedBlinkyTask(void const *argument) {
@@ -18,7 +18,7 @@ void LedBlinkyTask(void const *argument) {
     std::string s;
     while (1) {
         osMutexWait(pwmMutexHandle,10);
-        s = std::to_string(pwm);
+        s = std::to_string(pwm).append("\n");
         osMutexRelease(pwmMutexHandle);
         HAL_UART_Transmit_IT(&huart1,(uint8_t *)s.c_str(),s.size());
         HAL_GPIO_TogglePin(GPIOF, GPIO_PIN_9);
@@ -45,19 +45,14 @@ void ServoHandleTask(void const *argument) {
  */
 
 void MotorHandleTask(void const *argument) {
-//    ikun::move(motors);
-//    static int64_t prev_count = encoder1.GetCount();
-//    osDelay(5000);
+    for(uint8_t i=0;i<4;i++){
+        motors[i].encoder->Start();
+    }
+    ikun::stop(motors);
     while (1) {
         osMutexWait(pwmMutexHandle,10);
-//        int64_t count = encoder1.GetCount();
-//        if(count >= prev_count){
-//            pwm = count - prev_count;
-//        }else{
-//            pwm = count+65535-prev_count;
-//        }
-//        pwm = pwm/550;
-//        prev_count = count;
+        pwm = motors[0].encoder->GetCount();
+//        pwm = motors[2].encoder->GetAngle();
         osMutexRelease(pwmMutexHandle);
         osDelay(50);
     }
@@ -97,19 +92,24 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 /* 主函数 */
 void Main() {
+    motors[0].driver = new Driver(Config_Driver_1);
+    motors[1].driver = new Driver(Config_Driver_2);
+    motors[2].driver = new Driver(Config_Driver_3);
+    motors[3].driver = new Driver(Config_Driver_4);
 
-//    motors[0].driver = new Driver(Config_Driver_1);
-//    motors[1].driver = new Driver(Config_Driver_2);
-//    motors[2].driver = new Driver(Config_Driver_3);
-//    motors[3].driver = new Driver(Config_Driver_4);
-//
-//    motors[0].encoder = new Encoder(&htim1);
-//    motors[1].encoder = new Encoder(&htim3);
-//    motors[2].encoder = new Encoder(&htim4);
-//    motors[3].encoder = new Encoder(&htim8);
+    motors[0].encoder = new Encoder(&htim1);
+    motors[1].encoder = new Encoder(&htim3);
+    motors[2].encoder = new Encoder(&htim4);
+    motors[3].encoder = new Encoder(&htim8);
 
+    Controller *controller = new Controller(0,0,0);
 
+    for(uint8_t i=0;i<4;i++){
+        motors[i].driver->Init();
+//        motors[i].controller = controller;
+    }
 
+    HAL_UART_Transmit_IT(&huart1,(uint8_t *)"hello",5);
     osMutexDef(pwmMutex);
     pwmMutexHandle = osMutexCreate(osMutex(pwmMutex));
 
