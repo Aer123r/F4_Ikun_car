@@ -8,10 +8,16 @@
 #include "cmath"
 
 
+
 class Motor;
 class Controller {
 public:
     friend Motor;
+    typedef struct {
+        float kp;
+        float ki;
+        float kd;
+    } Config_PID_t;
 
     typedef struct
     {

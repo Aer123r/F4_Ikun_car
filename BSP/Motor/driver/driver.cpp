@@ -3,7 +3,7 @@
 //
 
 #include "driver.hpp"
-Driver::Driver(Driver_t driver,int64_t cnt): driver(driver),cnt(cnt) {}
+Driver::Driver(Driver_t driver,int64_t cnt,Direction_t d): driver(driver),cnt(cnt),status(d) {}
 
 Driver::~Driver() {}
 
@@ -14,6 +14,7 @@ void Driver::Init() {
 }
 
 void Driver::SetDirection(Direction_t d) {
+    this->status = d;
     GPIO_PinState A_pinStatus;
     GPIO_PinState B_pinStatus;
     switch (d) {

@@ -47,11 +47,12 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 osThreadId ledBlinkyTaskHandle;
-osThreadId motorTaskHandle;
+osThreadId motorSpeedUpdateTaskHandle;
 osThreadId obstacleTaskHandle;
 osThreadId servoTaskHandle;
+osThreadId carControllerTaskHandle;
 
-osMutexId pwmMutexHandle;
+osMutexId rxDataMutexHandle;
 
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;

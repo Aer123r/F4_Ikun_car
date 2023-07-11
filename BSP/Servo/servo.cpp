@@ -12,7 +12,7 @@ void Servo::Init() {
     HAL_TIM_PWM_Start(&htim9,TIM_CHANNEL_1);
 }
 
-void Servo::SetAngle(float angle) {
+void Servo::SetAngle(uint16_t angle) {
     uint32_t setCount = (500+angle*(2000.0/RotationAngle));
     __HAL_TIM_SET_COMPARE(htim,CHANNEL,setCount);
 }

@@ -27,3 +27,9 @@ Controller::Controller(int32_t kp, int32_t ki, int32_t kd): pid({
     .ki = ki,
     .kd = kd,
 }) {}
+
+Controller::Controller(Config_PID_t *config_pid): pid({
+    .kp = config_pid->kp,
+    .ki = config_pid->ki,
+    .kd = config_pid->kd,
+}) {}

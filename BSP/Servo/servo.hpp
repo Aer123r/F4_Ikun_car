@@ -16,7 +16,7 @@ public:
     Servo(TIM_HandleTypeDef *htim,uint32_t CHANNEL,const uint16_t RotationAngle=270);
     ~Servo();
     void Init();
-    void SetAngle(float angle);
+    void SetAngle(uint16_t angle);
 };
 
 

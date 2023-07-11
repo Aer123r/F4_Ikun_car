@@ -65,7 +65,8 @@ public:
 
     int64_t cnt;
     int64_t err;
-    explicit Driver(Driver_t driver,int64_t cnt = 200);
+    Direction_t status;
+    explicit Driver(Driver_t driver,int64_t cnt = 200,Direction_t=STOP);
     ~Driver();
 
     void Init();
