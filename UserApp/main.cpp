@@ -9,9 +9,8 @@ Motor motors[4];
 Servo servo(&htim9,TIM_CHANNEL_1);
 
 StaticJsonDocument<200> jsonDocument;
+Rx_Data_t rx_data;
 
-uint8_t rx_data[255];
-bool isReceived = false;
 int64_t pwm;
 
 /* LED Blinking Task */
@@ -63,6 +62,7 @@ void MotorSpeedUpdateHandleTask(void const *argument) {
         for (auto& motor : motors) {
             motor.correctCount();
         }
+
         osDelay(50);
     }
 }
@@ -79,18 +79,10 @@ void obstacleDetectionAndProcessingTask(void const *argument) {
     }
 }
 
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
+    HAL_UART_Transmit(&huart1, rx_data.data, Size,100);
+    rx_data.isReceived = true;
 
-void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size){
-    HAL_UART_Transmit(&huart1,rx_data,Size,100);
-    DeserializationError error = deserializeJson(jsonDocument, rx_data);
-    if (!error) {
-        int blockType = jsonDocument["id"];
-        float xBias = jsonDocument["Tx"];
-        float distance = jsonDocument["Rz"];
-        HAL_UART_Transmit(&huart1, (uint8_t *)std::to_string(blockType).append("\n").c_str(),1,100);
-        HAL_UART_Transmit(&huart1, (uint8_t *)std::to_string(xBias).append("\n").c_str(),std::to_string(xBias).length(),100);
-        HAL_UART_Transmit(&huart1, (uint8_t *)std::to_string(distance).append("\n").c_str(),std::to_string(distance).length(),100);
-    }
 }
 /**
  * @name 光电传感器任务

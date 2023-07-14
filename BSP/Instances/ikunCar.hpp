@@ -7,9 +7,9 @@
 #include "common_inc.h"
 
 typedef struct {
-    uint8_t data[100];
+    uint8_t data[255];
     bool isReceived;
-    uint16_t size;
+
 } Rx_Data_t;
 
 namespace ikun {
@@ -25,6 +25,7 @@ namespace ikun {
         motors[2].driver->SetDirection(STOP);
         motors[3].driver->SetDirection(STOP);
     }
+
 
 };
 #endif //F4_IKUN_CAR_IKUNCAR_HPP

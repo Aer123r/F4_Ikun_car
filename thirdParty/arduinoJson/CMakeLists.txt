@@ -7,6 +7,7 @@
 
 add_library(ArduinoJson INTERFACE)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(GNUInstallDirs)
 
 # Adding the install interface generator expression makes sure that the include

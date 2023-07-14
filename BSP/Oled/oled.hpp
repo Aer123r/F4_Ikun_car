@@ -3,7 +3,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "u8g2.h"
+#include "csrc/u8g2.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */

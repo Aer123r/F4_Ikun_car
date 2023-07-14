@@ -19,12 +19,12 @@ void Driver::SetDirection(Direction_t d) {
     GPIO_PinState B_pinStatus;
     switch (d) {
         case FORWARD:
-           A_pinStatus = GPIO_PIN_SET;
-           B_pinStatus = GPIO_PIN_RESET;
+           A_pinStatus = GPIO_PIN_RESET;
+           B_pinStatus = GPIO_PIN_SET;
             break;
         case BACKWARD:
-            A_pinStatus = GPIO_PIN_RESET;
-            B_pinStatus = GPIO_PIN_SET;
+            A_pinStatus = GPIO_PIN_SET;
+            B_pinStatus = GPIO_PIN_RESET;
             break;
         case STOP:
             A_pinStatus = GPIO_PIN_RESET;
