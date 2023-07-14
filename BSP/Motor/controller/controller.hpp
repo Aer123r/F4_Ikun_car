@@ -28,7 +28,8 @@ public:
     } PID_t;
     PID_t  pid{0};
 
-    explicit Controller(int32_t kp,int32_t ki,int32_t kd);
+    explicit Controller(float kp,float ki,float kd);
+    explicit Controller(Config_PID_t *config_pid);
     void PIDController(int32_t setpoint, int32_t processVariable);
 
 

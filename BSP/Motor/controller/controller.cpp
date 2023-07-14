@@ -22,7 +22,7 @@ void Controller::PIDController(int32_t setpoint, int32_t processVariable)
     return;
 }
 
-Controller::Controller(int32_t kp, int32_t ki, int32_t kd): pid({
+Controller::Controller(float kp, float ki, float kd): pid({
     .kp = kp,
     .ki = ki,
     .kd = kd,

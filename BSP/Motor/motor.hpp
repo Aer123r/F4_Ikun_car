@@ -24,7 +24,7 @@ public:
     Motor();
     ~Motor();
 
-    void correctCount();
+    int64_t correctCount();
 
 };
 

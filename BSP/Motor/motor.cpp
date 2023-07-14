@@ -5,7 +5,8 @@ Motor::Motor(){}
 
 Motor::~Motor(){}
 
-void Motor::correctCount() {
+int64_t Motor::correctCount() {
+    assert_param(this->driver->status != Direction_t::STOP);
     assert_param(this->driver != nullptr);
     assert_param(this->controller != nullptr);
     assert_param(this->encoder != nullptr);
@@ -38,6 +39,17 @@ void Motor::correctCount() {
 //        HAL_UART_Transmit(&huart1,(uint8_t *)s.c_str(),s.size(),100);
 //    }
     var.prev_count = count;
-    return;
+
+    controller->PIDController(driver->cnt,cnt);
+
+    // 限幅
+    if(controller->pid.output > 20){
+        controller->pid.output = 20;
+    }else if(controller->pid.output < -20) {
+        controller->pid.output = -20;
+    }
+
+    driver->SetERR(controller->pid.output);
+    return cnt;
 }
 
