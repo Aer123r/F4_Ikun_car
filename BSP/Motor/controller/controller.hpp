@@ -22,16 +22,17 @@ public:
     typedef struct
     {
         float kp, ki, kd;
-        float vError, vErrorLast;
+        float vError, vErrorLast,vError2;
         float integral;
         int32_t output;
+        float output2;
     } PID_t;
     PID_t  pid{0};
 
     explicit Controller(float kp,float ki,float kd);
     explicit Controller(Config_PID_t *config_pid);
     void PIDController(int32_t setpoint, int32_t processVariable);
-
+    void LocationPIDController(float setpoint,float processVariable);
 
 };
 

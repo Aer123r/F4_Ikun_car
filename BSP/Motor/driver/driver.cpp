@@ -37,14 +37,16 @@ void Driver::SetDirection(Direction_t d) {
 
 void Driver::SetCNT(int64_t cnt) {
     this->cnt = cnt;
-            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt+this->err);
+            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt+this->err+this->offset);
 }
 
-int64_t Driver::GetCNT() {
-    return this->cnt;
-}
 
 void Driver::SetERR(int64_t err) {
     this->err = err;
-            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt+this->err);
+            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt+this->err+this->offset);
+}
+
+void Driver::SetOffset(int64_t offset) {
+    this->offset = offset;
+            __HAL_TIM_SetCompare(this->driver.htim, this->driver.Channel, this->cnt+this->err+this->offset);
 }

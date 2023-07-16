@@ -40,7 +40,7 @@ int64_t Motor::correctCount() {
 //    }
     var.prev_count = count;
 
-    controller->PIDController(driver->cnt,cnt);
+    controller->PIDController(driver->cnt+driver->offset,cnt);
 
     // 限幅
     if(controller->pid.output > 20){

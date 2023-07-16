@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+// List of timers
+extern osTimerId timerId;
 // List of semaphores
 extern osMutexId rxDataMutexHandle;
 

@@ -7,12 +7,19 @@
 #include "common_inc.h"
 enum CarStatus_t {
     Normal,
+    Stop,
     EnergyBlockEncountered,
     BombBlockEncounter,
     OrdinaryBlockEncounter,
     LeftBoundaryDetection,
     RightBoundaryDetection,
 };
+
+typedef struct {
+    int blockType;
+    double xBias;
+    double distance;
+}BlockInfo_t;
 
 extern Motor motors[4];
 extern CarStatus_t car_status;

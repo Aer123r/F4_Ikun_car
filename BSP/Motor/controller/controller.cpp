@@ -4,13 +4,15 @@
 
 #include "controller.hpp"
 #include "string"
-void Controller::PIDController(int32_t setpoint, int32_t processVariable)
-{
-    static int epoch=0;
+//位置式
+void Controller::LocationPIDController(float setpoint, float processVariable) {
+//    static int epoch=0;
     pid.vError = setpoint - processVariable;
     pid.integral += pid.vError;
-    float derivative = pid.vError-pid.vErrorLast;
-    pid.output = int32_t (pid.kp*pid.vError + pid.integral*pid.ki+pid.kd*derivative);
+    float derivative = pid.vError - pid.vErrorLast;
+    pid.output2 = pid.kp * pid.vError
+                  + pid.integral * pid.ki
+                  +pid.kd * derivative;
     pid.vErrorLast = pid.vError;
 
 //    if(epoch++ == 20){
@@ -22,6 +24,12 @@ void Controller::PIDController(int32_t setpoint, int32_t processVariable)
     return;
 }
 
+void Controller::PIDController(int32_t setpoint, int32_t processVariable) {
+    pid.vError = setpoint-processVariable;
+    pid.output = (pid.kp * pid.vError) - (pid.ki*pid.vErrorLast)+(pid.kd * pid.vError2);
+    pid.vError2 = pid.vErrorLast;
+    pid.vErrorLast = pid.vError;
+}
 Controller::Controller(float kp, float ki, float kd): pid({
     .kp = kp,
     .ki = ki,

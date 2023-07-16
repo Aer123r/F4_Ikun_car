@@ -65,7 +65,9 @@ public:
 
     int64_t cnt;
     int64_t err;
+    int64_t offset=0;
     Direction_t status;
+
     explicit Driver(Driver_t driver,int64_t cnt = 200,Direction_t=STOP);
     ~Driver();
 
@@ -73,6 +75,7 @@ public:
     void SetDirection(Direction_t d);
     void SetCNT(int64_t cnt);
     void SetERR(int64_t err);
+    void SetOffset(int64_t offset);
     int64_t GetCNT();
 };
 
