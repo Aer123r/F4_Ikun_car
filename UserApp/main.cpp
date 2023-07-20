@@ -27,9 +27,8 @@ void LedBlinkyTask(void const *argument) {
  * @param argument
  */
 void CarControllerTask(void const *argument) {
-    osTimerStart(timerId,500);
     servo.Init();
-    servo.SetAngle(85); // 79
+    servo.SetAngle(120); // 79
     ikun::stop();
     // 开启定时器
     while (1) {
@@ -41,15 +40,15 @@ void CarControllerTask(void const *argument) {
 }
 
 void timerTask(void const *argument){
-//    osMutexWait(carStatusMutexHandle,HAL_MAX_DELAY);
+    osMutexWait(carStatusMutexHandle,HAL_MAX_DELAY);
     HAL_UART_Transmit(&huart2,(uint8_t *)"offset reset\r\n",14,100);
-//    for(auto& motor:motors){
-//        motor.driver->SetDirection(Direction_t::FORWARD);
-//        motor.driver->SetOffset(0);
-//    }
-//    LocationPIDController->pid.vErrorLast = 0;
-//    LocationPIDController->pid.vError2 = 0;
-//    osMutexRelease(carStatusMutexHandle);
+    for(auto& motor:motors){
+        motor.driver->SetDirection(Direction_t::FORWARD);
+        motor.driver->SetOffset(0);
+    }
+    LocationPIDController->pid.vErrorLast = 0;
+    LocationPIDController->pid.vError2 = 0;
+    osMutexRelease(carStatusMutexHandle);
 }
 /**
  * @def 舵机控制任务
@@ -135,12 +134,12 @@ void obstacleDetectionAndProcessingTask(void const *argument) {
                     std::string outputStr = "output:"+std::to_string(output)+"\r\n";
                     HAL_UART_Transmit_IT(&huart2, (uint8_t*)outputStr.c_str(), outputStr.length());
                     //判断为能量块
-                    motors[0].driver->SetOffset(-output*2);
-                    motors[1].driver->SetOffset(-output*2);
-                    motors[1].driver->SetOffset(output*2);
-                    motors[1].driver->SetOffset(output*2);
-//                    osTimerStop(timerId);
-//                    osTimerStart(timerId,1000);
+                    motors[0].driver->SetOffset(int64_t(-output*2.5));
+                    motors[1].driver->SetOffset(int64_t(-output*2.5));
+                    motors[1].driver->SetOffset(int64_t(output*2.5));
+                    motors[1].driver->SetOffset(int64_t(output*2.5));
+                    osTimerStop(timerId);
+                    osTimerStart(timerId,300);
                 }
                 osMutexRelease(carStatusMutexHandle);
             }
@@ -241,7 +240,7 @@ void Main() {
     HAL_UART_Transmit_IT(&huart2, (uint8_t *)"hello\n", 6);
 
     osTimerDef(timer1,timerTask);
-    timerId = osTimerCreate(osTimer(timer1),osTimerPeriodic,NULL);
+    timerId = osTimerCreate(osTimer(timer1),osTimerOnce,NULL);
 
     osMutexDef(RxDataMutex);
     rxDataMutexHandle = osMutexCreate(osMutex(RxDataMutex));
