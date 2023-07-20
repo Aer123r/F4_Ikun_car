@@ -52,8 +52,10 @@ osThreadId obstacleTaskHandle;
 osThreadId servoTaskHandle;
 osThreadId carControllerTaskHandle;
 
-osMutexId rxDataMutexHandle;
+osMutexId carStatusMutexHandle;
 
+
+osTimerId timerId;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 

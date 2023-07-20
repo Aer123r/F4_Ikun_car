@@ -1,0 +1,121 @@
+//void Motor::Init() {
+//    m1 = {
+//            .htim = &htim2,
+//            .Channel = TIM_CHANNEL_3,
+//            MOTOR1_A_PORT,
+//            MOTOR1_A_PIN,
+//            MOTOR1_B_PORT,
+//            MOTOR1_B_PIN
+//    };
+//    m2 = {
+//            .htim = &htim2,
+//            .Channel = TIM_CHANNEL_2,
+//            MOTOR2_A_PORT,
+//            MOTOR2_A_PIN,
+//            MOTOR2_B_PORT,
+//            MOTOR2_B_PIN
+//    };
+//    m3 = {
+//            .htim = &htim5,
+//            .Channel = TIM_CHANNEL_3,
+//            MOTOR3_A_PORT,
+//            MOTOR3_A_PIN,
+//            MOTOR3_B_PORT,
+//            MOTOR3_B_PIN
+//    };
+//    m4 = {
+//            .htim = &htim5,
+//            .Channel = TIM_CHANNEL_2,
+//            MOTOR4_A_PORT,
+//            MOTOR4_A_PIN,
+//            MOTOR4_B_PORT,
+//            MOTOR4_B_PIN
+//    };
+//    // TODO m1,m2,m3的初始化
+//    HAL_TIM_PWM_Start(m1.htim, m1.Channel);
+//    HAL_TIM_PWM_Start(m2.htim, m2.Channel);
+//    HAL_TIM_PWM_Start(m3.htim, m3.Channel);
+//    HAL_TIM_PWM_Start(m4.htim, m4.Channel);
+//}
+
+// TODO
+//void Motor::Move() {
+//            __HAL_TIM_SetCompare(m1.htim, m1.Channel, 0.6 * 1000);
+//    setDirection(this->m1,FORWARD);
+//            __HAL_TIM_SetCompare(m2.htim, m2.Channel, 0.6 * 1000);
+//    setDirection(this->m2,FORWARD);
+//            __HAL_TIM_SetCompare(m3.htim, m3.Channel, 0.6 * 1000);
+//    setDirection(this->m3,FORWARD);
+//            __HAL_TIM_SetCompare(m4.htim, m4.Channel, 0.6 * 1000);
+//    setDirection(this->m4,FORWARD);
+//}
+
+//void Motor::setDirection(Motor_t &m,Direction_t d) {
+//    switch (d) {
+//        case FORWARD:
+//            HAL_GPIO_WritePin(m.PORT_A, m.PIN_A, GPIO_PIN_SET);
+//            HAL_GPIO_WritePin(m.PORT_B, m.PIN_B, GPIO_PIN_RESET);
+//            break;
+//        case BACKWARD:
+//            HAL_GPIO_WritePin(m.PORT_A, m.PIN_A, GPIO_PIN_RESET);
+//            HAL_GPIO_WritePin(m.PORT_B, m.PIN_B, GPIO_PIN_SET);
+//            break;
+//        case STOP:
+//            HAL_GPIO_WritePin(m.PORT_A, m.PIN_A, GPIO_PIN_RESET);
+//            HAL_GPIO_WritePin(m.PORT_B, m.PIN_B, GPIO_PIN_RESET);
+//            break;
+//    }
+//}
+
+
+
+//void Motor::Stop() {
+//    setDirection(this->m1,STOP);
+//    setDirection(this->m2,STOP);
+//    setDirection(this->m3,STOP);
+//    setDirection(this->m4,STOP);
+//}
+
+        std::string blockTypeStr(jsonDocument["id"]);
+        std::string xBiasStr(jsonDocument["Tx"]);
+        std::string zBiasStr(jsonDocument["Tz"]);
+
+        double xBias = std::strtod(xBiasStr.c_str(),NULL);
+        double zBias = std::strtod(zBiasStr.c_str(),NULL);
+        uint8_t blockType = std::strtol(zBiasStr.c_str(),NULL,10);
+        HAL_UART_Transmit(&huart1,(uint8_t *)blockTypeStr.c_str(),blockTypeStr.length(),100);
+        if(blockType == 0){
+            // 改进：依据zBias的值进行s
+            // 判断为炸弹
+            ikun::stop(motors);
+//                    if(xBias < 4 && xBias > 0){
+//                        // 左转
+//                        motors[0].driver->SetCNT(motors[0].driver->cnt - xBias*20); // 左轮
+//                        motors[1].driver->SetCNT(motors[1].driver->cnt - xBias*20);
+//                        motors[2].driver->SetCNT(motors[2].driver->cnt + xBias*20);
+//                        motors[3].driver->SetCNT(motors[3].driver->cnt + xBias*20);
+//                    }else if(xBias > -4 && xBias < 0){
+//                        // 右转
+//                        motors[0].driver->SetCNT(motors[0].driver->cnt + xBias*20); // 左轮
+//                        motors[1].driver->SetCNT(motors[1].driver->cnt + xBias*20);
+//                        motors[2].driver->SetCNT(motors[2].driver->cnt - xBias*20);
+//                        motors[3].driver->SetCNT(motors[3].driver->cnt - xBias*20);
+//                    }
+        }else if(blockType == 1){
+            //判断为能量块
+            ikun::stop(motors);
+//                    if(xBias > 0.5){
+//                        // 右转
+//                        motors[0].driver->SetCNT(motors[0].driver->cnt + xBias*10); // 左轮
+//                        motors[1].driver->SetCNT(motors[1].driver->cnt + xBias*10);
+//                        motors[2].driver->SetCNT(motors[2].driver->cnt - xBias*10);
+//                        motors[3].driver->SetCNT(motors[3].driver->cnt - xBias*10);
+//
+//                    }else if(xBias > -4 && xBias < 0){
+//                        // 左转
+//                        motors[0].driver->SetCNT(motors[0].driver->cnt - xBias*10); // 左轮
+//                        motors[1].driver->SetCNT(motors[1].driver->cnt - xBias*10);
+//                        motors[2].driver->SetCNT(motors[2].driver->cnt + xBias*10);
+//                        motors[3].driver->SetCNT(motors[3].driver->cnt + xBias*10);
+//                    }
+        }

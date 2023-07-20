@@ -10,7 +10,7 @@ extern "C" {
 // List of timers
 extern osTimerId timerId;
 // List of semaphores
-extern osMutexId rxDataMutexHandle;
+extern osMutexId carStatusMutexHandle;
 
 
 // List of Tasks

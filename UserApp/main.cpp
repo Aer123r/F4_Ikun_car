@@ -74,7 +74,6 @@ void MotorSpeedUpdateHandleTask(void const *argument) {
         for (auto &motor : motors) {
             motor.correctCount();
         }
-
         osDelay(50);
     }
 }
@@ -108,7 +107,6 @@ void obstacleDetectionAndProcessingTask(void const *argument) {
                         for(int i = 0 ; i < 2 ; i++){
                             motors[i].driver->SetDirection(Direction_t::BACKWARD);
                         }
-                        // 别动代码
                         osDelay(500);
                         for(int i = 0 ; i < 2 ; i++){
                             motors[i].driver->SetDirection(Direction_t::FORWARD);
@@ -123,10 +121,6 @@ void obstacleDetectionAndProcessingTask(void const *argument) {
                         for(int i = 0 ; i < 2 ; i++){
                             motors[i+2].driver->SetDirection(Direction_t::FORWARD);
                         }
-                    }
-                    osDelay(1000);
-                    for(auto& motor:motors){
-                        motor.driver->SetCNT(400);
                     }
                 }else if(blockType == 1){
                     LocationPIDController->LocationPIDController(0,xBias);
@@ -210,8 +204,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
 /* 主函数 */
 void Main() {
-
-
+//    HAL_NVIC_DisableIRQ(EXTI2_IRQn);
+//    HAL_NVIC_DisableIRQ(EXTI3_IRQn);
     Controller::Config_PID_t config_pid = {
             .kp = 1.00,
             .ki = 0.29,
@@ -243,7 +237,7 @@ void Main() {
     timerId = osTimerCreate(osTimer(timer1),osTimerOnce,NULL);
 
     osMutexDef(RxDataMutex);
-    rxDataMutexHandle = osMutexCreate(osMutex(RxDataMutex));
+    carStatusMutexHandle = osMutexCreate(osMutex(RxDataMutex));
 
     osThreadDef(LedBlinkyTask_, LedBlinkyTask, osPriorityNormal, 0, 256);
     ledBlinkyTaskHandle = osThreadCreate(osThread(LedBlinkyTask_), NULL);
